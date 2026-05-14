@@ -128,18 +128,20 @@ erDiagram
 
 ```mermaid
 graph LR
-    subgraph Auth ["인증 (인증 불필요)"]
+    subgraph Auth ["인증 불필요"]
         A1["POST /auth/register"]
         A2["POST /auth/login"]
+        A3["POST /auth/refresh (body: refreshToken)"]
+        Z1["GET /api-docs (Swagger UI)"]
     end
-    subgraph AuthReq ["인증 필요"]
+    subgraph AuthReq ["인증 필요 (Bearer AT)"]
         B1["POST /auth/logout"]
-        B2["POST /auth/refresh"]
         C1["GET /categories"]
         D1["GET /todos"]
         D2["POST /todos"]
-        D3["PUT /todos/:id"]
-        D4["DELETE /todos/:id"]
-        D5["PATCH /todos/:id/toggle"]
+        D3["GET /todos/:id"]
+        D4["PUT /todos/:id"]
+        D5["DELETE /todos/:id"]
+        D6["PATCH /todos/:id/toggle"]
     end
 ```

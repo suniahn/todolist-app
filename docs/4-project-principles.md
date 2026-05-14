@@ -192,6 +192,7 @@ JWT_EXPIRES_IN=        # Access Token 만료 (예: 1h)
 JWT_REFRESH_EXPIRES_IN= # Refresh Token 만료 (예: 7d)
 PORT=                  # 서버 포트
 NODE_ENV=              # development | production | test
+ALLOWED_ORIGINS=       # CORS 허용 오리진 (쉼표 구분, 예: http://localhost:5173)
 ```
 
 - `.env` 파일은 절대 git에 커밋하지 않는다. `.env.example`만 커밋한다.
@@ -218,10 +219,8 @@ PRD 에러 코드 체계를 모든 API 응답에 일관되게 적용한다.
 
 ```json
 {
-  "error": {
-    "code": "AUTH_DUPLICATE_EMAIL",
-    "message": "이미 사용 중인 이메일입니다."
-  }
+  "code": "AUTH_EMAIL_DUPLICATE",
+  "message": "이미 사용 중인 이메일입니다"
 }
 ```
 

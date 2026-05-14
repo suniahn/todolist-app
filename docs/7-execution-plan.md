@@ -23,10 +23,10 @@ Version 1.0 | 2026-05-13
 **목표**: `backend/`, `frontend/` 디렉토리 구조 생성 및 공통 설정 파일 작성
 
 **작업 항목**:
-- [ ] 루트 `.gitignore` 작성 (`.env`, `node_modules/`, `*.log`, `dist/`)
-- [ ] `backend/` 디렉토리 생성 및 `package.json` 초기화 (`npm init`)
-- [ ] `frontend/` 디렉토리 생성 및 Vite + React 19 + TypeScript 프로젝트 초기화
-- [ ] `backend/.env.example` 작성 (아래 변수 포함)
+- [x] 루트 `.gitignore` 작성 (`.env`, `node_modules/`, `*.log`, `dist/`)
+- [x] `backend/` 디렉토리 생성 및 `package.json` 초기화 (`npm init`)
+- [x] `frontend/` 디렉토리 생성 및 Vite + React 19 + TypeScript 프로젝트 초기화
+- [x] `backend/.env.example` 작성 (아래 변수 포함)
   ```
   DATABASE_URL=postgresql://user:password@localhost:5432/todolist_db
   JWT_SECRET=
@@ -37,13 +37,13 @@ Version 1.0 | 2026-05-13
   NODE_ENV=development
   ALLOWED_ORIGINS=http://localhost:5173
   ```
-- [ ] `frontend/.env.example` 작성 (`VITE_API_BASE_URL=http://localhost:3000/api/v1`)
+- [x] `frontend/.env.example` 작성 (`VITE_API_BASE_URL=http://localhost:3000/api/v1`)
 
 **완료 조건**:
-- [ ] `backend/`, `frontend/` 디렉토리가 루트에 존재
-- [ ] 각 디렉토리에 `package.json` 존재
-- [ ] `.env.example` 파일이 모든 필수 변수를 포함
-- [ ] `.env` 파일이 `.gitignore`에 포함
+- [x] `backend/`, `frontend/` 디렉토리가 루트에 존재
+- [x] 각 디렉토리에 `package.json` 존재
+- [x] `.env.example` 파일이 모든 필수 변수를 포함
+- [x] `.env` 파일이 `.gitignore`에 포함
 
 **의존성**: 없음
 
@@ -56,24 +56,24 @@ Version 1.0 | 2026-05-13
 **목표**: PostgreSQL 17 데이터베이스 생성 및 `database/schema.sql` 적용
 
 **작업 항목**:
-- [ ] 데이터베이스 생성: `CREATE DATABASE todolist_db;`
-- [ ] pgcrypto 확장 활성화 확인: `CREATE EXTENSION IF NOT EXISTS "pgcrypto";`
-- [ ] `database/schema.sql` 실행하여 3개 테이블 생성
+- [x] 데이터베이스 생성: `CREATE DATABASE todolist_db;`
+- [x] pgcrypto 확장 활성화 확인: `CREATE EXTENSION IF NOT EXISTS "pgcrypto";`
+- [x] `database/schema.sql` 실행하여 3개 테이블 생성
   - `users` 테이블 (id, email, password, name, created_at, updated_at)
   - `categories` 테이블 (id, name, is_default, user_id, created_at)
   - `todos` 테이블 (id, user_id, category_id, title, description, start_date, due_date, is_completed, completed_at, created_at, updated_at)
-- [ ] 5개 인덱스 생성 확인
+- [x] 5개 인덱스 생성 확인
   - `idx_todos_user_id`, `idx_todos_category_id`, `idx_todos_due_date`
   - `idx_todos_is_completed`, `idx_categories_user_id`
-- [ ] 기본 카테고리 4종 시드 데이터 삽입 확인
+- [x] 기본 카테고리 4종 시드 데이터 삽입 확인
   - 업무, 개인, 건강, 쇼핑 (`is_default=TRUE`, `user_id=NULL`)
 
 **완료 조건**:
-- [ ] `\dt` 명령으로 `users`, `categories`, `todos` 테이블 3개 확인
-- [ ] `SELECT * FROM categories;` 결과에 4개 기본 카테고리 존재
-- [ ] `\d todos` 명령으로 CHECK 제약조건 `chk_todos_due_date` 확인
-- [ ] `\di` 명령으로 5개 인덱스 모두 확인
-- [ ] `gen_random_uuid()` 함수 호출 성공 확인
+- [x] `\dt` 명령으로 `users`, `categories`, `todos` 테이블 3개 확인
+- [x] `SELECT * FROM categories;` 결과에 4개 기본 카테고리 존재
+- [x] `\d todos` 명령으로 CHECK 제약조건 `chk_todos_due_date` 확인
+- [x] `\di` 명령으로 5개 인덱스 모두 확인
+- [x] `gen_random_uuid()` 함수 호출 성공 확인
 
 **의존성**: TASK-0-1
 
@@ -84,32 +84,32 @@ Version 1.0 | 2026-05-13
 **목표**: 스키마의 모든 제약조건이 올바르게 작동하는지 SQL로 검증
 
 **작업 항목**:
-- [ ] `uq_users_email` UNIQUE 제약 검증
+- [x] `uq_users_email` UNIQUE 제약 검증
   ```sql
   INSERT INTO users (email, password, name) VALUES ('test@test.com', 'hash', 'A');
   INSERT INTO users (email, password, name) VALUES ('test@test.com', 'hash', 'B'); -- 오류 확인
   ```
-- [ ] `chk_todos_due_date` CHECK 제약 검증
+- [x] `chk_todos_due_date` CHECK 제약 검증
   ```sql
   -- 테스트용 더미 user/category 삽입 후:
   INSERT INTO todos (..., start_date, due_date) VALUES (..., '2026-05-15', '2026-05-10'); -- 오류 확인
   ```
-- [ ] `fk_todos_user` CASCADE 삭제 검증
+- [x] `fk_todos_user` CASCADE 삭제 검증
   ```sql
   -- user 삭제 시 해당 user의 todos 자동 삭제 확인
   ```
-- [ ] `fk_todos_category` RESTRICT 동작 검증
+- [x] `fk_todos_category` RESTRICT 동작 검증
   ```sql
   -- todos가 있는 category 삭제 시 FK 오류 확인
   ```
-- [ ] `user_id=NULL` 카테고리 접근 시 기본 카테고리 조회 확인
+- [x] `user_id=NULL` 카테고리 접근 시 기본 카테고리 조회 확인
 
 **완료 조건**:
-- [ ] 중복 이메일 INSERT 시 `duplicate key value violates unique constraint` 오류 발생
-- [ ] due_date < start_date INSERT 시 `violates check constraint` 오류 발생
-- [ ] user 삭제 시 todos 자동 삭제 (CASCADE) 동작 확인
-- [ ] todo 보유 category 삭제 시 FK 오류 발생
-- [ ] `WHERE is_default = TRUE OR user_id = $1` 쿼리로 5개 이상 카테고리 조회 성공
+- [x] 중복 이메일 INSERT 시 `duplicate key value violates unique constraint` 오류 발생
+- [x] due_date < start_date INSERT 시 `violates check constraint` 오류 발생
+- [x] user 삭제 시 todos 자동 삭제 (CASCADE) 동작 확인
+- [x] todo 보유 category 삭제 시 FK 오류 발생
+- [x] `WHERE is_default = TRUE OR user_id = $1` 쿼리로 5개 이상 카테고리 조회 성공
 
 **의존성**: TASK-DB-1
 
@@ -122,11 +122,11 @@ Version 1.0 | 2026-05-13
 **목표**: Express 앱 골격, DB 연결 풀, 에러 클래스 구현
 
 **작업 항목**:
-- [ ] 백엔드 의존성 설치
+- [x] 백엔드 의존성 설치
   ```
   express, pg, bcrypt, jsonwebtoken, cors, dotenv
   ```
-- [ ] 디렉토리 구조 생성
+- [x] 디렉토리 구조 생성
   ```
   backend/src/
   ├── routes/
@@ -137,8 +137,8 @@ Version 1.0 | 2026-05-13
   ├── db/
   └── utils/
   ```
-- [ ] `src/db/pool.js` 구현 (pg.Pool, DATABASE_URL 환경변수 사용, max: 20)
-- [ ] `src/utils/errors.js` 구현
+- [x] `src/db/pool.js` 구현 (pg.Pool, DATABASE_URL 환경변수 사용, max: 20)
+- [x] `src/utils/errors.js` 구현
   - `AppError` 클래스 (code, message, statusCode 필드)
   - 11개 에러 코드 상수 정의
     - `AUTH_INVALID_CREDENTIALS` (401), `AUTH_EMAIL_DUPLICATE` (409)
@@ -146,17 +146,17 @@ Version 1.0 | 2026-05-13
     - `TODO_NOT_FOUND` (404), `TODO_FORBIDDEN` (403), `TODO_INVALID_DATE` (400)
     - `CATEGORY_NOT_FOUND` (404), `CATEGORY_IN_USE` (409)
     - `VALIDATION_ERROR` (400), `INTERNAL_SERVER_ERROR` (500)
-- [ ] `src/middleware/error.middleware.js` 구현
+- [x] `src/middleware/error.middleware.js` 구현
   - AppError → `{ code, message }` JSON 응답 변환
   - 미처리 에러 → `INTERNAL_SERVER_ERROR` (500) 응답
-- [ ] `src/app.js` 구현 (CORS, JSON 파싱, 라우터 마운트, 에러 미들웨어 등록)
-- [ ] `src/index.js` 구현 (dotenv 로드, 서버 시작)
+- [x] `src/app.js` 구현 (CORS, JSON 파싱, 라우터 마운트, 에러 미들웨어 등록)
+- [x] `src/index.js` 구현 (dotenv 로드, 서버 시작)
 
 **완료 조건**:
-- [ ] `node src/index.js` 실행 시 `Server running on port 3000` 출력
-- [ ] `pool.query('SELECT 1')` 성공 (DB 연결 확인)
-- [ ] 존재하지 않는 라우트 요청 시 404 응답
-- [ ] 의도적 에러 발생 시 `{ code, message }` 형식의 JSON 응답 반환
+- [x] `node src/index.js` 실행 시 `Server running on port 3000` 출력
+- [x] `pool.query('SELECT 1')` 성공 (DB 연결 확인)
+- [x] 존재하지 않는 라우트 요청 시 404 응답
+- [x] 의도적 에러 발생 시 `{ code, message }` 형식의 JSON 응답 반환
 
 **의존성**: TASK-0-1, TASK-DB-1
 
@@ -167,7 +167,7 @@ Version 1.0 | 2026-05-13
 **목표**: JWT Access Token 검증 미들웨어 구현
 
 **작업 항목**:
-- [ ] `src/middleware/auth.middleware.js` 구현
+- [x] `src/middleware/auth.middleware.js` 구현
   - `Authorization: Bearer <token>` 헤더 추출
   - 헤더 없음 → `AUTH_UNAUTHORIZED` (401) throw
   - `jwt.verify(token, JWT_SECRET)` 검증
@@ -176,10 +176,10 @@ Version 1.0 | 2026-05-13
   - 검증 성공 → `req.userId = payload.sub` 설정 후 next()
 
 **완료 조건**:
-- [ ] Authorization 헤더 없는 요청 → 401 `AUTH_UNAUTHORIZED`
-- [ ] 만료된 JWT → 401 `AUTH_TOKEN_EXPIRED`
-- [ ] 서명이 틀린 JWT → 401 `AUTH_UNAUTHORIZED`
-- [ ] 유효한 JWT → `req.userId`에 UUID 문자열 설정
+- [x] Authorization 헤더 없는 요청 → 401 `AUTH_UNAUTHORIZED`
+- [x] 만료된 JWT → 401 `AUTH_TOKEN_EXPIRED`
+- [x] 서명이 틀린 JWT → 401 `AUTH_UNAUTHORIZED`
+- [x] 유효한 JWT → `req.userId`에 UUID 문자열 설정
 
 **의존성**: TASK-BE-1
 
@@ -190,11 +190,11 @@ Version 1.0 | 2026-05-13
 **목표**: 회원가입, 로그인, 토큰 갱신, 로그아웃 API 구현
 
 **작업 항목**:
-- [ ] `src/repositories/user.repository.js` 구현
-  - `findByEmail(email)` → `SELECT * FROM users WHERE email = $1`
-  - `findById(id)` → `SELECT * FROM users WHERE id = $1`
-  - `create({ email, hashedPassword, name })` → `INSERT INTO users ... RETURNING *`
-- [ ] `src/services/auth.service.js` 구현
+- [x] `src/repositories/user.repository.js` 구현
+  - `findByEmail(email)` → `SELECT * FROM users WHERE email = $1` (bcrypt 비교를 위해 password 필드 포함)
+  - `findById(id)` → `SELECT id, email, name, created_at, updated_at FROM users WHERE id = $1` (password 필드 제외)
+  - `create({ email, hashedPassword, name })` → `INSERT INTO users ... RETURNING id, email, name, created_at, updated_at` (password 필드 제외)
+- [x] `src/services/auth.service.js` 구현
   - `register(email, password, name)`:
     - 이메일 중복 확인 → `AUTH_EMAIL_DUPLICATE` (409)
     - bcrypt.hash(password, 12)
@@ -208,25 +208,25 @@ Version 1.0 | 2026-05-13
     - 만료 → `AUTH_TOKEN_EXPIRED` (401)
     - 새 Access Token 생성 반환
   - `logout(refreshToken)`: MVP는 클라이언트 측 삭제로 처리 (서버 blacklist 생략)
-- [ ] `src/controllers/auth.controller.js` 구현 (입력 검증 + HTTP 직렬화)
+- [x] `src/controllers/auth.controller.js` 구현 (입력 검증 + HTTP 직렬화)
   - register: email RFC 5322 형식, password 8자+영문+숫자, name 1-50자
   - login: email/password 필수 여부 검증
-- [ ] `src/routes/auth.routes.js` 구현
+- [x] `src/routes/auth.routes.js` 구현
   - `POST /auth/register` → auth.controller.register
   - `POST /auth/login` → auth.controller.login
   - `POST /auth/logout` → authMiddleware → auth.controller.logout
   - `POST /auth/refresh` → auth.controller.refresh
 
 **완료 조건**:
-- [ ] `POST /auth/register` 성공 → 201, 유저 정보 반환 (password 필드 제외)
-- [ ] `POST /auth/register` 중복 이메일 → 409 `AUTH_EMAIL_DUPLICATE`
-- [ ] `POST /auth/register` 잘못된 입력 → 400 `VALIDATION_ERROR`
-- [ ] `POST /auth/login` 성공 → 200, `{ accessToken, refreshToken }` 반환
-- [ ] `POST /auth/login` 잘못된 비밀번호 → 401 `AUTH_INVALID_CREDENTIALS`
-- [ ] `POST /auth/refresh` 유효한 RT → 200, `{ accessToken }` 반환
-- [ ] `POST /auth/refresh` 만료된 RT → 401 `AUTH_TOKEN_EXPIRED`
-- [ ] `POST /auth/logout` AT 없음 → 401 `AUTH_UNAUTHORIZED`
-- [ ] DB에 비밀번호가 bcrypt 해시로 저장됨 확인 (`$2b$12$` 접두사)
+- [x] `POST /auth/register` 성공 → 201, 유저 정보 반환 (password 필드 제외)
+- [x] `POST /auth/register` 중복 이메일 → 409 `AUTH_EMAIL_DUPLICATE`
+- [x] `POST /auth/register` 잘못된 입력 → 400 `VALIDATION_ERROR`
+- [x] `POST /auth/login` 성공 → 200, `{ accessToken, refreshToken }` 반환
+- [x] `POST /auth/login` 잘못된 비밀번호 → 401 `AUTH_INVALID_CREDENTIALS`
+- [x] `POST /auth/refresh` 유효한 RT → 200, `{ accessToken }` 반환
+- [x] `POST /auth/refresh` 만료된 RT → 401 `AUTH_TOKEN_EXPIRED`
+- [x] `POST /auth/logout` AT 없음 → 401 `AUTH_UNAUTHORIZED`
+- [x] DB에 비밀번호가 bcrypt 해시로 저장됨 확인 (`$2b$12$` 접두사)
 
 **의존성**: TASK-BE-1, TASK-BE-2
 
@@ -237,7 +237,7 @@ Version 1.0 | 2026-05-13
 **목표**: 사용자 접근 가능한 카테고리 목록 조회 API 구현
 
 **작업 항목**:
-- [ ] `src/repositories/category.repository.js` 구현
+- [x] `src/repositories/category.repository.js` 구현
   - `findAllByUser(userId)`:
     ```sql
     SELECT * FROM categories
@@ -245,21 +245,21 @@ Version 1.0 | 2026-05-13
     ORDER BY is_default DESC, name ASC
     ```
   - `findById(categoryId)` → 카테고리 존재/접근 권한 확인용
-- [ ] `src/services/category.service.js` 구현
+- [x] `src/services/category.service.js` 구현
   - `getCategories(userId)` → category.repository.findAllByUser(userId)
   - `validateCategoryAccess(categoryId, userId)`:
     - category.repository.findById() → 없으면 `CATEGORY_NOT_FOUND` (404)
     - `is_default=TRUE` 이거나 `user_id === userId` 이면 접근 허용
     - 그 외 → `CATEGORY_NOT_FOUND` (404)
-- [ ] `src/controllers/category.controller.js` 구현
-- [ ] `src/routes/category.routes.js` 구현
+- [x] `src/controllers/category.controller.js` 구현
+- [x] `src/routes/category.routes.js` 구현
   - `GET /categories` → authMiddleware → category.controller.getAll
 
 **완료 조건**:
-- [ ] `GET /categories` (AT 포함) → 200, 4개 기본 카테고리 배열 반환
-- [ ] `GET /categories` AT 없음 → 401 `AUTH_UNAUTHORIZED`
-- [ ] 응답에 `id`, `name`, `is_default`, `user_id` 필드 포함
-- [ ] validateCategoryAccess: 존재하지 않는 categoryId → `CATEGORY_NOT_FOUND`
+- [x] `GET /categories` (AT 포함) → 200, 4개 기본 카테고리 배열 반환
+- [x] `GET /categories` AT 없음 → 401 `AUTH_UNAUTHORIZED`
+- [x] 응답에 `id`, `name`, `is_default`, `user_id` 필드 포함
+- [x] validateCategoryAccess: 존재하지 않는 categoryId → `CATEGORY_NOT_FOUND`
 
 **의존성**: TASK-BE-2, TASK-DB-1
 
@@ -270,7 +270,7 @@ Version 1.0 | 2026-05-13
 **목표**: Todo 생성, 조회, 수정, 삭제 API 구현 (BR-03, BR-07, BR-08 적용)
 
 **작업 항목**:
-- [ ] `src/repositories/todo.repository.js` 구현
+- [x] `src/repositories/todo.repository.js` 구현
   - `findById(todoId)` → `SELECT * FROM todos WHERE id = $1`
   - `findAllByUser(userId, filters)`:
     ```sql
@@ -284,8 +284,8 @@ Version 1.0 | 2026-05-13
   - `countByUser(userId, filters)` → 전체 개수 (페이지네이션용)
   - `create({ userId, categoryId, title, description, startDate, dueDate })` → `INSERT INTO todos ... RETURNING *`
   - `update(todoId, fields)` → `UPDATE todos SET ..., updated_at=NOW() WHERE id=$1 RETURNING *`
-  - `delete(todoId)` → `DELETE FROM todos WHERE id = $1`
-- [ ] `src/services/todo.service.js` 구현
+  - `deleteTodo(todoId)` → `DELETE FROM todos WHERE id = $1`
+- [x] `src/services/todo.service.js` 구현
   - `createTodo(userId, payload)`:
     - category.service.validateCategoryAccess(categoryId, userId)
     - `due_date >= start_date` 검증 → `TODO_INVALID_DATE` (400)
@@ -305,31 +305,31 @@ Version 1.0 | 2026-05-13
   - `deleteTodo(todoId, userId)`:
     - getTodoById() (소유권 확인 포함)
     - todo.repository.delete()
-- [ ] `src/controllers/todo.controller.js` 구현 (입력 검증 + HTTP 직렬화)
+- [x] `src/controllers/todo.controller.js` 구현 (입력 검증 + HTTP 직렬화)
   - title: 필수, max 200자
   - description: 선택, max 1000자
   - start_date, due_date: 필수, YYYY-MM-DD 형식
   - category_id: 필수, UUID 형식
   - 쿼리 파라미터: page/limit 숫자 변환
-- [ ] `src/routes/todo.routes.js` 구현
+- [x] `src/routes/todo.routes.js` 구현
   - `GET /todos` → todo.controller.getAll
   - `POST /todos` → todo.controller.create
   - `GET /todos/:id` → todo.controller.getOne
   - `PUT /todos/:id` → todo.controller.update
-  - `DELETE /todos/:id` → todo.controller.delete
+  - `DELETE /todos/:id` → todo.controller.deleteTodo
 
 **완료 조건**:
-- [ ] `POST /todos` 성공 → 201, 생성된 todo 반환 (is_completed=false, completed_at=null)
-- [ ] `POST /todos` due_date < start_date → 400 `TODO_INVALID_DATE`
-- [ ] `POST /todos` 존재하지 않는 category_id → 404 `CATEGORY_NOT_FOUND`
-- [ ] `GET /todos` → 200, `{ todos: [], pagination: { page, limit, total } }` 반환
-- [ ] `GET /todos?category_id=...` → 해당 카테고리 todo만 반환
-- [ ] `GET /todos?is_completed=true` → 완료된 todo만 반환
-- [ ] `GET /todos?schedule_status=overdue` → due_date < 오늘 AND is_completed=false 만 반환
-- [ ] `GET /todos/:id` 타인 todo 조회 → 403 `TODO_FORBIDDEN`
-- [ ] `PUT /todos/:id` 성공 → 200, updated_at이 갱신된 todo 반환
-- [ ] `DELETE /todos/:id` 성공 → 204 No Content
-- [ ] `DELETE /todos/:id` 타인 todo → 403 `TODO_FORBIDDEN`
+- [x] `POST /todos` 성공 → 201, 생성된 todo 반환 (is_completed=false, completed_at=null)
+- [x] `POST /todos` due_date < start_date → 400 `TODO_INVALID_DATE`
+- [x] `POST /todos` 존재하지 않는 category_id → 404 `CATEGORY_NOT_FOUND`
+- [x] `GET /todos` → 200, `{ todos: [], pagination: { page, limit, total } }` 반환
+- [x] `GET /todos?category_id=...` → 해당 카테고리 todo만 반환
+- [x] `GET /todos?is_completed=true` → 완료된 todo만 반환
+- [x] `GET /todos?schedule_status=overdue` → due_date < 오늘 AND is_completed=false 만 반환
+- [x] `GET /todos/:id` 타인 todo 조회 → 403 `TODO_FORBIDDEN`
+- [x] `PUT /todos/:id` 성공 → 200, updated_at이 갱신된 todo 반환
+- [x] `DELETE /todos/:id` 성공 → 204 No Content
+- [x] `DELETE /todos/:id` 타인 todo → 403 `TODO_FORBIDDEN`
 
 **의존성**: TASK-BE-2, TASK-BE-4
 
@@ -340,7 +340,7 @@ Version 1.0 | 2026-05-13
 **목표**: `PATCH /todos/:id/toggle` 구현 (BR-09)
 
 **작업 항목**:
-- [ ] `todo.repository.js`에 `toggleCompletion(todoId, currentCompleted)` 추가
+- [x] `todo.repository.js`에 `toggleCompletion(todoId, currentCompleted)` 추가
   ```sql
   UPDATE todos
   SET is_completed = $2,
@@ -349,18 +349,18 @@ Version 1.0 | 2026-05-13
   WHERE id = $1
   RETURNING *
   ```
-- [ ] `todo.service.js`에 `toggleTodo(todoId, userId)` 추가
+- [x] `todo.service.js`에 `toggleTodo(todoId, userId)` 추가
   - getTodoById() (소유권 확인)
   - 현재 `is_completed` 반전하여 repository.toggleCompletion() 호출
-- [ ] `todo.controller.js`에 `toggle` 핸들러 추가
-- [ ] `todo.routes.js`에 `PATCH /todos/:id/toggle` 등록
+- [x] `todo.controller.js`에 `toggle` 핸들러 추가
+- [x] `todo.routes.js`에 `PATCH /todos/:id/toggle` 등록
 
 **완료 조건**:
-- [ ] 미완료 todo 토글 → `is_completed=true`, `completed_at=<현재시각>` 반환
-- [ ] 완료된 todo 재토글 → `is_completed=false`, `completed_at=null` 반환
-- [ ] updated_at 갱신 확인
-- [ ] 타인 todo 토글 → 403 `TODO_FORBIDDEN`
-- [ ] 존재하지 않는 todo 토글 → 404 `TODO_NOT_FOUND`
+- [x] 미완료 todo 토글 → `is_completed=true`, `completed_at=<현재시각>` 반환
+- [x] 완료된 todo 재토글 → `is_completed=false`, `completed_at=null` 반환
+- [x] updated_at 갱신 확인
+- [x] 타인 todo 토글 → 403 `TODO_FORBIDDEN`
+- [x] 존재하지 않는 todo 토글 → 404 `TODO_NOT_FOUND`
 
 **의존성**: TASK-BE-5
 
@@ -371,19 +371,24 @@ Version 1.0 | 2026-05-13
 **목표**: 전체 API 흐름 통합 검증 (인증 → 카테고리 → Todo CRUD)
 
 **작업 항목**:
-- [ ] HTTP 클라이언트(curl, Postman, HTTPie 등)로 전체 시나리오 수동 실행
-- [ ] 회원가입 → 로그인 → todo 생성 → 수정 → 완료 토글 → 삭제 전체 흐름 확인
-- [ ] Access Token 만료 시뮬레이션 후 Refresh Token으로 갱신 확인
-- [ ] 다른 사용자의 todo 접근 시도 → 403 확인
-- [ ] 카테고리 필터, 완료 필터, schedule_status 필터 개별/복합 동작 확인
-- [ ] 모든 에러 코드 응답이 `{ code, message }` 형식인지 확인
+- [x] HTTP 클라이언트(curl)로 SCN-01~10 전체 시나리오 수동 실행 (47/47 PASS)
+- [x] 회원가입 → 로그인 → todo 생성 → 수정 → 완료 토글 → 삭제 전체 흐름 확인
+- [x] Access Token 만료 시뮬레이션 후 Refresh Token으로 갱신 확인
+- [x] 다른 사용자의 todo 접근 시도 → 403 확인
+- [x] 카테고리 필터, 완료 필터, schedule_status 필터 개별/복합 동작 확인
+- [x] 모든 에러 코드 응답이 `{ code, message }` 형식인지 확인
+- [x] Swagger UI 추가 (`GET /api-docs`, `swagger-ui-express` 패키지, `swagger/swagger.json` 연동)
+- [x] 주요 지점 console log 추가 (`[HTTP]` 요청 로거, `[AUTH]` 인증 이벤트, `[TODO]` CRUD 이벤트, `[ERROR]` 에러 처리)
+- [x] `pg` DATE 타입 파서 설정 (`types.setTypeParser`) — DATE 컬럼을 `YYYY-MM-DD` 문자열로 반환 (타임존 변환 방지)
 
 **완료 조건**:
-- [ ] 9개 엔드포인트 모두 성공 케이스 동작 확인
-- [ ] 11개 에러 코드 중 구현된 모든 코드의 HTTP 상태코드 정확성 확인
-- [ ] 다른 사용자 데이터 격리 (BR-03) 확인
-- [ ] 응답 본문에 password 필드 미포함 확인
-- [ ] pg 파라미터 바인딩 사용 (SQL 인젝션 방지) 코드 리뷰 확인
+- [x] 9개 엔드포인트 모두 성공 케이스 동작 확인
+- [x] 11개 에러 코드 중 구현된 모든 코드의 HTTP 상태코드 정확성 확인
+- [x] 다른 사용자 데이터 격리 (BR-03) 확인
+- [x] 응답 본문에 password 필드 미포함 확인 (user.repository.js 명시적 컬럼 선택으로 구현)
+- [x] pg 파라미터 바인딩 사용 (SQL 인젝션 방지) 코드 리뷰 확인
+- [x] Swagger UI (`http://localhost:3000/api-docs`) 접근 확인
+- [x] DATE 컬럼 타임존 변환 문제 수정 확인 (YYYY-MM-DD 형식 응답)
 
 **의존성**: TASK-BE-3 ~ TASK-BE-6 모두
 
@@ -709,19 +714,19 @@ TASK-0-1 (초기 세팅)
 ## 비기능 요구사항 체크리스트
 
 ### 보안
-- [ ] 모든 SQL 쿼리 파라미터 바인딩 사용 (`$1`, `$2`) — SQL 인젝션 방지
-- [ ] bcrypt saltRounds ≥ 12
-- [ ] JWT 시크릿 환경변수 로드 (하드코딩 금지)
-- [ ] 응답에 password 필드 미포함
-- [ ] CORS 허용 오리진 명시적 설정
+- [x] 모든 SQL 쿼리 파라미터 바인딩 사용 (`$1`, `$2`) — SQL 인젝션 방지
+- [x] bcrypt saltRounds ≥ 12
+- [x] JWT 시크릿 환경변수 로드 (하드코딩 금지)
+- [x] 응답에 password 필드 미포함 (user.repository.js 명시적 컬럼 선택)
+- [x] CORS 허용 오리진 명시적 설정 (`ALLOWED_ORIGINS` 환경변수)
 
 ### 성능
-- [ ] 5개 DB 인덱스 적용 확인
-- [ ] 페이지네이션 기본값 limit=20 적용
+- [x] 5개 DB 인덱스 적용 확인
+- [x] 페이지네이션 기본값 limit=20 적용
 
 ### 코드 품질
-- [ ] ORM 미사용 확인 (pg 직접 사용)
-- [ ] `any` 타입 미사용 (TypeScript strict)
-- [ ] ESLint 오류 없음
-- [ ] Set-Cookie 응답 헤더 미사용 (토큰은 JSON body)
-- [ ] localStorage 토큰 저장 미사용 (Zustand 메모리 저장)
+- [x] ORM 미사용 확인 (pg 직접 사용)
+- [x] Set-Cookie 응답 헤더 미사용 (토큰은 JSON body)
+- [ ] `any` 타입 미사용 (TypeScript strict) — 프론트엔드 미구현
+- [ ] ESLint 오류 없음 — 프론트엔드 미구현
+- [ ] localStorage 토큰 저장 미사용 (Zustand 메모리 저장) — 프론트엔드 미구현
