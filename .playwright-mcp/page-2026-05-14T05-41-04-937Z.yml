@@ -1,0 +1,82 @@
+- generic [ref=e2]:
+  - banner [ref=e105]:
+    - heading "TodoListApp" [level=1] [ref=e106]
+    - button "로그아웃" [ref=e108] [cursor=pointer]
+  - main [ref=e109]:
+    - generic [ref=e111]:
+      - generic [ref=e112]:
+        - generic [ref=e113]: 카테고리
+        - combobox [ref=e114]:
+          - option "전체" [selected]
+          - option "개인"
+          - option "건강"
+          - option "쇼핑"
+          - option "업무"
+      - generic [ref=e115]:
+        - generic [ref=e116]: 완료 여부
+        - combobox [ref=e117]:
+          - option "전체" [selected]
+          - option "미완료만"
+          - option "완료만"
+      - generic [ref=e118]:
+        - generic [ref=e119]: 일정 상태
+        - generic [ref=e120]:
+          - generic [ref=e121] [cursor=pointer]:
+            - radio "전체" [checked] [ref=e122]
+            - text: 전체
+          - generic [ref=e123] [cursor=pointer]:
+            - radio "진행 중" [ref=e124]
+            - text: 진행 중
+          - generic [ref=e125] [cursor=pointer]:
+            - radio "기간초과" [ref=e126]
+            - text: 기간초과
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - button "+ 새로운 할일 추가" [ref=e129] [cursor=pointer]
+        - generic [ref=e130]: 총 3개
+      - table [ref=e132]:
+        - rowgroup [ref=e133]:
+          - row "완료 제목 카테고리 시작일 종료예정일" [ref=e134]:
+            - columnheader "완료" [ref=e135]
+            - columnheader "제목" [ref=e136]
+            - columnheader "카테고리" [ref=e137]
+            - columnheader "시작일" [ref=e138]
+            - columnheader "종료예정일" [ref=e139]
+            - columnheader [ref=e140]
+        - rowgroup [ref=e141]:
+          - row "SCN-04 기간초과 할일 업무 2026-05-10 2026-05-13 수정 삭제" [ref=e142]:
+            - cell [ref=e143]:
+              - checkbox [ref=e144] [cursor=pointer]
+            - cell "SCN-04 기간초과 할일" [ref=e145]
+            - cell "업무" [ref=e146]:
+              - generic [ref=e147]: 업무
+            - cell "2026-05-10" [ref=e148]
+            - cell "2026-05-13" [ref=e149]
+            - cell "수정 삭제" [ref=e150]:
+              - generic [ref=e151]:
+                - button "수정" [ref=e152] [cursor=pointer]
+                - button "삭제" [ref=e153] [cursor=pointer]
+          - row "SCN-01 테스트 할일 업무 2026-05-14 2026-05-20 수정 삭제" [ref=e154]:
+            - cell [ref=e155]:
+              - checkbox [ref=e156] [cursor=pointer]
+            - cell "SCN-01 테스트 할일" [ref=e157]
+            - cell "업무" [ref=e158]:
+              - generic [ref=e159]: 업무
+            - cell "2026-05-14" [ref=e160]
+            - cell "2026-05-20" [ref=e161]
+            - cell "수정 삭제" [ref=e162]:
+              - generic [ref=e163]:
+                - button "수정" [ref=e164] [cursor=pointer]
+                - button "삭제" [ref=e165] [cursor=pointer]
+          - row "SCN-03 날짜 테스트 개인 2026-05-20 2026-05-25 수정 삭제" [ref=e166]:
+            - cell [ref=e167]:
+              - checkbox [ref=e168] [cursor=pointer]
+            - cell "SCN-03 날짜 테스트" [ref=e169]
+            - cell "개인" [ref=e170]:
+              - generic [ref=e171]: 개인
+            - cell "2026-05-20" [ref=e172]
+            - cell "2026-05-25" [ref=e173]
+            - cell "수정 삭제" [ref=e174]:
+              - generic [ref=e175]:
+                - button "수정" [ref=e176] [cursor=pointer]
+                - button "삭제" [ref=e177] [cursor=pointer]

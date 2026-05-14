@@ -1,0 +1,36 @@
+- generic [ref=e2]:
+  - banner [ref=e246]:
+    - heading "TodoListApp" [level=1] [ref=e247]
+  - main [ref=e248]:
+    - generic [ref=e249]:
+      - heading "할일 수정" [level=2] [ref=e250]
+      - generic [ref=e251]:
+        - generic [ref=e252]:
+          - generic [ref=e253]: 제목 *
+          - textbox "제목 *" [ref=e254]:
+            - /placeholder: 할일 제목을 입력하세요
+            - text: SCN-01 테스트 할일
+          - generic [ref=e255]: 13 / 200
+        - generic [ref=e256]:
+          - generic [ref=e257]: 설명
+          - textbox "설명" [ref=e258]:
+            - /placeholder: 설명을 입력하세요 (선택)
+          - generic [ref=e259]: 0 / 1000
+        - generic [ref=e260]:
+          - generic [ref=e261]:
+            - generic [ref=e262]: 시작일 *
+            - textbox "시작일 *" [ref=e263]: 2026-05-14
+          - generic [ref=e264]:
+            - generic [ref=e265]: 종료예정일 *
+            - textbox "종료예정일 *" [ref=e266]: 2026-05-20
+        - generic [ref=e267]:
+          - generic [ref=e268]: 카테고리 *
+          - combobox "카테고리 *" [ref=e269]:
+            - option "카테고리를 선택하세요"
+            - option "개인"
+            - option "건강"
+            - option "쇼핑"
+            - option "업무" [selected]
+        - generic [ref=e270]:
+          - button "취소" [ref=e271] [cursor=pointer]
+          - button "저장" [ref=e272] [cursor=pointer]

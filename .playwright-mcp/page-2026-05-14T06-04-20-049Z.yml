@@ -1,0 +1,60 @@
+- generic [ref=e2]:
+  - banner [ref=e17]:
+    - heading "TodoListApp" [level=1] [ref=e18]
+    - generic [ref=e19]:
+      - generic [ref=e20]: SCN01유저님
+      - button "카테고리 관리" [ref=e21] [cursor=pointer]
+      - button "로그아웃" [ref=e22] [cursor=pointer]
+  - main [ref=e23]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: 카테고리
+        - combobox [ref=e28]:
+          - option "전체" [selected]
+          - option "개인"
+          - option "건강"
+          - option "쇼핑"
+          - option "업무"
+      - generic [ref=e29]:
+        - generic [ref=e30]: 완료 여부
+        - combobox [ref=e31]:
+          - option "전체" [selected]
+          - option "미완료만"
+          - option "완료만"
+      - generic [ref=e32]:
+        - generic [ref=e33]: 일정 상태
+        - generic [ref=e34]:
+          - generic [ref=e35] [cursor=pointer]:
+            - radio "전체" [checked] [ref=e36]
+            - text: 전체
+          - generic [ref=e37] [cursor=pointer]:
+            - radio "진행 중" [ref=e38]
+            - text: 진행 중
+          - generic [ref=e39] [cursor=pointer]:
+            - radio "기간초과" [ref=e40]
+            - text: 기간초과
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - button "+ 새로운 할일 추가" [ref=e43] [cursor=pointer]
+        - generic [ref=e44]: 총 2개
+      - generic [ref=e45]:
+        - generic [ref=e47]:
+          - checkbox [ref=e48] [cursor=pointer]
+          - generic [ref=e49]:
+            - paragraph [ref=e50]: SCN-04 기간초과 할일
+            - generic [ref=e52]: 업무
+            - generic [ref=e53]:
+              - generic [ref=e54]: 2026-05-10 ~ 2026-05-13
+              - generic [ref=e55]:
+                - button "수정" [ref=e56] [cursor=pointer]
+                - button "삭제" [ref=e57] [cursor=pointer]
+        - generic [ref=e59]:
+          - checkbox [ref=e60] [cursor=pointer]
+          - generic [ref=e61]:
+            - paragraph [ref=e62]: SCN-03 날짜 테스트
+            - generic [ref=e64]: 개인
+            - generic [ref=e65]:
+              - generic [ref=e66]: 2026-05-20 ~ 2026-05-25
+              - generic [ref=e67]:
+                - button "수정" [ref=e68] [cursor=pointer]
+                - button "삭제" [ref=e69] [cursor=pointer]

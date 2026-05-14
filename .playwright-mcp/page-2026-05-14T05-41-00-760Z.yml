@@ -1,0 +1,36 @@
+- generic [ref=e2]:
+  - banner [ref=e78]:
+    - heading "TodoListApp" [level=1] [ref=e79]
+  - main [ref=e80]:
+    - generic [ref=e81]:
+      - heading "새로운 할일 추가" [level=2] [ref=e82]
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - generic [ref=e85]: 제목 *
+          - textbox "제목 *" [ref=e86]:
+            - /placeholder: 할일 제목을 입력하세요
+            - text: SCN-04 기간초과 할일
+          - generic [ref=e87]: 14 / 200
+        - generic [ref=e88]:
+          - generic [ref=e89]: 설명
+          - textbox "설명" [ref=e90]:
+            - /placeholder: 설명을 입력하세요 (선택)
+          - generic [ref=e91]: 0 / 1000
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]: 시작일 *
+            - textbox "시작일 *" [ref=e95]: 2026-05-10
+          - generic [ref=e96]:
+            - generic [ref=e97]: 종료예정일 *
+            - textbox "종료예정일 *" [active] [ref=e98]: 2026-05-13
+        - generic [ref=e99]:
+          - generic [ref=e100]: 카테고리 *
+          - combobox "카테고리 *" [ref=e101]:
+            - option "카테고리를 선택하세요"
+            - option "개인"
+            - option "건강"
+            - option "쇼핑"
+            - option "업무" [selected]
+        - generic [ref=e102]:
+          - button "취소" [ref=e103] [cursor=pointer]
+          - button "등록" [ref=e104] [cursor=pointer]

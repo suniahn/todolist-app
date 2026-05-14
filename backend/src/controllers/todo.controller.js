@@ -6,8 +6,8 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 
 async function getAll(req, res, next) {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
     const filters = {
       categoryId: req.query.category_id || null,
       isCompleted: req.query.is_completed !== undefined
@@ -52,6 +52,8 @@ async function create(req, res, next) {
 
 async function getOne(req, res, next) {
   try {
+    if (!UUID_REGEX.test(req.params.id))
+      return next(createError('VALIDATION_ERROR', '유효한 todo id가 필요합니다'));
     const todo = await todoService.getTodoById(req.params.id, req.userId);
     res.status(200).json(todo);
   } catch (err) {
@@ -61,6 +63,8 @@ async function getOne(req, res, next) {
 
 async function update(req, res, next) {
   try {
+    if (!UUID_REGEX.test(req.params.id))
+      return next(createError('VALIDATION_ERROR', '유효한 todo id가 필요합니다'));
     const { title, description, start_date, due_date, category_id } = req.body;
 
     if (title !== undefined && (title.length === 0 || title.length > 200))
@@ -89,6 +93,8 @@ async function update(req, res, next) {
 
 async function deleteTodo(req, res, next) {
   try {
+    if (!UUID_REGEX.test(req.params.id))
+      return next(createError('VALIDATION_ERROR', '유효한 todo id가 필요합니다'));
     await todoService.deleteTodo(req.params.id, req.userId);
     res.status(204).send();
   } catch (err) {
@@ -98,6 +104,8 @@ async function deleteTodo(req, res, next) {
 
 async function toggle(req, res, next) {
   try {
+    if (!UUID_REGEX.test(req.params.id))
+      return next(createError('VALIDATION_ERROR', '유효한 todo id가 필요합니다'));
     const todo = await todoService.toggleTodo(req.params.id, req.userId);
     res.status(200).json(todo);
   } catch (err) {

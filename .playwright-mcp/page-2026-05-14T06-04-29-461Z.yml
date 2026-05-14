@@ -1,0 +1,28 @@
+- generic [ref=e2]:
+  - banner [ref=e70]:
+    - heading "TodoListApp" [level=1] [ref=e71]
+    - generic [ref=e72]:
+      - generic [ref=e73]: SCN01유저님
+      - button "로그아웃" [ref=e74] [cursor=pointer]
+  - main [ref=e75]:
+    - generic [ref=e76]:
+      - button "← 할일 목록으로" [ref=e77] [cursor=pointer]
+      - heading "카테고리 관리" [level=2] [ref=e78]
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - heading "기본 카테고리" [level=3] [ref=e81]
+        - paragraph [ref=e82]: 시스템에서 제공하는 기본 카테고리입니다.
+      - generic [ref=e83]:
+        - generic [ref=e84]: 개인
+        - generic [ref=e85]: 건강
+        - generic [ref=e86]: 쇼핑
+        - generic [ref=e87]: 업무
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - heading "나의 카테고리" [level=3] [ref=e91]
+          - paragraph [ref=e92]: 직접 만든 카테고리입니다.
+        - button "+ 카테고리 추가" [ref=e93] [cursor=pointer]
+      - generic [ref=e94]:
+        - paragraph [ref=e95]: 아직 나만의 카테고리가 없습니다
+        - paragraph [ref=e96]: 카테고리를 추가하여 할일을 더 세분화하세요!

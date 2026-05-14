@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require(path.join(__dirname, '../../swagger/swagger.json'));
 const errorMiddleware = require('./middleware/error.middleware');
@@ -14,8 +15,14 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
   : ['http://localhost:5173'];
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
-app.use(express.json());
+app.use(helmet());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.use(express.json({ limit: '64kb' }));
 
 // HTTP request logger
 app.use((req, res, next) => {
@@ -31,8 +38,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Swagger UI (개발 환경에서만 노출)
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/categories', categoryRoutes);

@@ -245,21 +245,41 @@ Version 1.0 | 2026-05-13
     ORDER BY is_default DESC, name ASC
     ```
   - `findById(categoryId)` → 카테고리 존재/접근 권한 확인용
+  - `findByNameAndUser(name, userId)` → 이름 중복 확인용
+  - `create(userId, name)` → `INSERT INTO categories ... RETURNING *`
+  - `update(id, name)` → `UPDATE categories SET name = $1 WHERE id = $2 RETURNING *`
+  - `deleteById(id)` → `DELETE FROM categories WHERE id = $1`
+  - `hasRelatedTodos(id)` → `SELECT EXISTS(SELECT 1 FROM todos WHERE category_id = $1)`
 - [x] `src/services/category.service.js` 구현
   - `getCategories(userId)` → category.repository.findAllByUser(userId)
   - `validateCategoryAccess(categoryId, userId)`:
     - category.repository.findById() → 없으면 `CATEGORY_NOT_FOUND` (404)
     - `is_default=TRUE` 이거나 `user_id === userId` 이면 접근 허용
     - 그 외 → `CATEGORY_NOT_FOUND` (404)
+  - `createCategory(userId, name)`: 이름 유효성 검사, 중복 확인, 생성
+  - `updateCategory(categoryId, userId, name)`: 기본 카테고리 수정 불가, 소유권 확인, 중복 확인
+  - `deleteCategory(categoryId, userId)`: 기본 카테고리 삭제 불가, 소유권 확인, 할일 존재 여부 확인
 - [x] `src/controllers/category.controller.js` 구현
+  - `getAll`, `create`, `update`, `remove` 핸들러
+  - UUID ID 처리 (parseInt 사용 금지, 문자열 그대로 사용)
 - [x] `src/routes/category.routes.js` 구현
   - `GET /categories` → authMiddleware → category.controller.getAll
+  - `POST /categories` → authMiddleware → category.controller.create
+  - `PUT /categories/:id` → authMiddleware → category.controller.update
+  - `DELETE /categories/:id` → authMiddleware → category.controller.remove
 
 **완료 조건**:
 - [x] `GET /categories` (AT 포함) → 200, 4개 기본 카테고리 배열 반환
 - [x] `GET /categories` AT 없음 → 401 `AUTH_UNAUTHORIZED`
 - [x] 응답에 `id`, `name`, `is_default`, `user_id` 필드 포함
 - [x] validateCategoryAccess: 존재하지 않는 categoryId → `CATEGORY_NOT_FOUND`
+- [x] `POST /categories` 성공 → 201, 생성된 카테고리 반환
+- [x] `POST /categories` 중복 이름 → 400 `VALIDATION_ERROR`
+- [x] `PUT /categories/:id` 기본 카테고리 수정 시도 → 400 `VALIDATION_ERROR`
+- [x] `PUT /categories/:id` 타인 카테고리 수정 → 404 `CATEGORY_NOT_FOUND`
+- [x] `DELETE /categories/:id` 기본 카테고리 삭제 시도 → 400 `VALIDATION_ERROR`
+- [x] `DELETE /categories/:id` 할일이 있는 카테고리 삭제 → 409 `CATEGORY_IN_USE`
+- [x] `DELETE /categories/:id` 성공 → 204 No Content
 
 **의존성**: TASK-BE-2, TASK-DB-1
 
@@ -401,11 +421,11 @@ Version 1.0 | 2026-05-13
 **목표**: React 19 + TypeScript 프로젝트 구조 생성 및 공통 모듈 구현
 
 **작업 항목**:
-- [ ] 의존성 설치
+- [x] 의존성 설치
   ```
   zustand, @tanstack/react-query, axios
   ```
-- [ ] 디렉토리 구조 생성
+- [x] 디렉토리 구조 생성
   ```
   frontend/src/
   ├── pages/
@@ -419,20 +439,20 @@ Version 1.0 | 2026-05-13
   ├── types/
   └── utils/
   ```
-- [ ] `src/types/domain.ts` 작성
+- [x] `src/types/domain.ts` 작성
   - `User`, `Category`, `Todo` 인터페이스 정의
-- [ ] `src/types/api.ts` 작성
+- [x] `src/types/api.ts` 작성
   - `CreateTodoPayload`, `UpdateTodoPayload`
   - `LoginPayload`, `RegisterPayload`, `AuthResponse`
   - `TodoFilters` (category_id?, is_completed?, schedule_status?: `'ongoing' | 'overdue'`)
   - `PaginatedResponse<T>` (todos, pagination)
-- [ ] `tsconfig.json` strict 모드 활성화 확인
+- [x] `tsconfig.json` strict 모드 활성화 확인
 
 **완료 조건**:
-- [ ] `npm run dev` 실행 시 브라우저에서 기본 화면 접근 가능
-- [ ] TypeScript 컴파일 오류 없음 (`npm run build` 성공)
-- [ ] ESLint 오류 없음 (`npm run lint` 성공)
-- [ ] 모든 타입 파일에 `any` 미사용
+- [x] `npm run dev` 실행 시 브라우저에서 기본 화면 접근 가능
+- [x] TypeScript 컴파일 오류 없음 (`npm run build` 성공)
+- [x] ESLint 오류 없음 (`npm run lint` 성공)
+- [x] 모든 타입 파일에 `any` 미사용
 
 **의존성**: TASK-0-1
 
@@ -443,11 +463,11 @@ Version 1.0 | 2026-05-13
 **목표**: 인증 상태 관리 스토어와 API 클라이언트(토큰 자동 갱신 인터셉터) 구현
 
 **작업 항목**:
-- [ ] `src/store/authStore.ts` 구현
+- [x] `src/store/authStore.ts` 구현
   - 상태: `accessToken`, `refreshToken`, `currentUser`
   - 액션: `setTokens()`, `setCurrentUser()`, `clearAuth()`, `isAuthenticated()`
   - 저장소: 메모리(Zustand 기본값, persist 미사용)
-- [ ] `src/api/client.ts` 구현
+- [x] `src/api/client.ts` 구현
   - axios 인스턴스 생성 (baseURL: `VITE_API_BASE_URL`)
   - **요청 인터셉터**: authStore에서 accessToken 읽어 `Authorization: Bearer` 헤더 자동 첨부
   - **응답 인터셉터** (SCN-09 토큰 자동 갱신):
@@ -455,14 +475,14 @@ Version 1.0 | 2026-05-13
     - `POST /auth/refresh { refreshToken }` 호출
     - 성공 → authStore accessToken 업데이트 → 원본 요청 재시도
     - 실패 → authStore clearAuth() → `/login` 리다이렉트
-- [ ] `src/api/auth.ts` 구현
+- [x] `src/api/auth.ts` 구현
   - `register(email, password, name)`
   - `login(email, password)` → `AuthResponse`
   - `logout(refreshToken)`
   - `refreshAccessToken(refreshToken)` → `{ accessToken }`
-- [ ] `src/api/categories.ts` 구현
+- [x] `src/api/categories.ts` 구현
   - `fetchCategories()` → `Category[]`
-- [ ] `src/api/todos.ts` 구현
+- [x] `src/api/todos.ts` 구현
   - `fetchTodos(filters, page, limit)` → `PaginatedResponse<Todo>`
   - `fetchTodo(id)` → `Todo`
   - `createTodo(payload)` → `Todo`
@@ -471,11 +491,11 @@ Version 1.0 | 2026-05-13
   - `toggleTodo(id)` → `Todo`
 
 **완료 조건**:
-- [ ] authStore에 토큰 저장 후 API 요청 시 Authorization 헤더 자동 포함 확인
-- [ ] 401 `AUTH_TOKEN_EXPIRED` 응답 시 자동으로 /auth/refresh 호출 후 원본 요청 재시도 동작
-- [ ] RT 만료 시 clearAuth() 호출 후 /login으로 리다이렉트
-- [ ] 페이지 새로고침 시 authStore 초기화 (메모리 저장 확인)
-- [ ] TypeScript 컴파일 오류 없음
+- [x] authStore에 토큰 저장 후 API 요청 시 Authorization 헤더 자동 포함 확인
+- [x] 401 `AUTH_TOKEN_EXPIRED` 응답 시 자동으로 /auth/refresh 호출 후 원본 요청 재시도 동작
+- [x] RT 만료 시 clearAuth() 호출 후 /login으로 리다이렉트
+- [x] 페이지 새로고침 시 authStore 초기화 (메모리 저장 확인)
+- [x] TypeScript 컴파일 오류 없음
 
 **의존성**: TASK-FE-1, TASK-BE-3
 
@@ -486,36 +506,36 @@ Version 1.0 | 2026-05-13
 **목표**: LoginPage, SignupPage 구현 (UC-01, UC-02)
 
 **작업 항목**:
-- [ ] `src/components/auth/LoginForm.tsx` 구현
+- [x] `src/components/auth/LoginForm.tsx` 구현
   - 필드: email, password
   - 클라이언트 검증: 이메일 형식, 비밀번호 필수
   - 제출 중 버튼 비활성화
   - 에러: "이메일 또는 비밀번호가 올바르지 않습니다" 인라인 표시
-- [ ] `src/components/auth/SignupForm.tsx` 구현
+- [x] `src/components/auth/SignupForm.tsx` 구현
   - 필드: email, password, name
   - 클라이언트 검증: 이메일 RFC 5322, 비밀번호 8자+영문+숫자, 이름 1-50자
   - 실시간 인라인 에러 표시
   - 에러: 중복 이메일("이미 사용 중인 이메일입니다"), 형식 오류
-- [ ] `src/hooks/useAuth.ts` 구현
+- [x] `src/hooks/useAuth.ts` 구현
   - `login(email, password)`: api.auth.login() → authStore.setTokens() → navigate('/')
   - `signup(email, password, name)`: api.auth.register() → api.auth.login() → navigate('/')
   - `logout()`: api.auth.logout(RT) → authStore.clearAuth() → queryClient.clear() → navigate('/login')
-- [ ] `src/pages/LoginPage.tsx` 구현
-- [ ] `src/pages/SignupPage.tsx` 구현
-- [ ] `src/components/common/ProtectedRoute.tsx` 구현
+- [x] `src/pages/LoginPage.tsx` 구현
+- [x] `src/pages/SignupPage.tsx` 구현
+- [x] `src/components/common/ProtectedRoute.tsx` 구현
   - authStore.isAuthenticated() === false → `<Navigate to="/login" />`
-- [ ] `src/App.tsx` 라우팅 설정
+- [x] `src/App.tsx` 라우팅 설정
   - `/login` → LoginPage
   - `/register` → SignupPage
   - `/` → ProtectedRoute → TodoListPage
 
 **완료 조건**:
-- [ ] 올바른 이메일/비밀번호 로그인 → `/` 리다이렉트
-- [ ] 잘못된 비밀번호 → "이메일 또는 비밀번호가 올바르지 않습니다" 표시
-- [ ] 회원가입 성공 → 자동 로그인 후 `/` 리다이렉트
-- [ ] 중복 이메일 회원가입 → "이미 사용 중인 이메일입니다" 표시
-- [ ] 비밀번호 7자 → 폼 검증 오류 (제출 불가)
-- [ ] `/`에 비인증 접근 → `/login` 리다이렉트
+- [x] 올바른 이메일/비밀번호 로그인 → `/` 리다이렉트
+- [x] 잘못된 비밀번호 → "이메일 또는 비밀번호가 올바르지 않습니다" 표시
+- [x] 회원가입 성공 → 자동 로그인 후 `/` 리다이렉트
+- [x] 중복 이메일 회원가입 → "이미 사용 중인 이메일입니다" 표시
+- [x] 비밀번호 7자 → 폼 검증 오류 (제출 불가)
+- [x] `/`에 비인증 접근 → `/login` 리다이렉트
 
 **의존성**: TASK-FE-2, TASK-BE-3
 
@@ -526,39 +546,39 @@ Version 1.0 | 2026-05-13
 **목표**: TodoListPage 구현 (UC-08, SCN-04)
 
 **작업 항목**:
-- [ ] `src/hooks/useCategories.ts` 구현
+- [x] `src/hooks/useCategories.ts` 구현
   - TanStack Query: `['categories']` 키, fetchCategories() 호출
-- [ ] `src/hooks/useTodos.ts` 구현
+- [x] `src/hooks/useTodos.ts` 구현
   - TanStack Query: `['todos', filters, page]` 키
   - filters 변경 시 자동 재조회
   - 반환: `data`, `isLoading`, `error`, `refetch`
-- [ ] `src/components/todo/TodoFilter.tsx` 구현
+- [x] `src/components/todo/TodoFilter.tsx` 구현
   - 카테고리 드롭다운 (4개 기본 카테고리)
   - 완료 여부 체크박스 (미완료만 / 전체 / 완료만)
   - 일정 상태 라디오버튼 (전체 / 진행 중 / 기간초과)
   - 필터 변경 → useTodos 쿼리 파라미터 업데이트
-- [ ] `src/components/todo/TodoCard.tsx` 구현
+- [x] `src/components/todo/TodoCard.tsx` 구현
   - 표시: 제목, 카테고리명, 시작일, 종료예정일, 완료 상태
   - 완료된 todo: 제목 취소선, 회색 처리
   - 액션: 완료 체크박스(TASK-FE-5), 수정 버튼, 삭제 버튼
-- [ ] `src/components/todo/TodoList.tsx` 구현
+- [x] `src/components/todo/TodoList.tsx` 구현
   - TodoCard 목록 렌더링
   - 로딩 중: 스피너/스켈레톤 표시
   - 비어있을 때: "할일이 없습니다" 안내 메시지
   - 페이지네이션 컨트롤 (이전/다음 버튼)
-- [ ] `src/pages/TodoListPage.tsx` 구현
+- [x] `src/pages/TodoListPage.tsx` 구현
   - "새로운 할일 추가" 버튼 → `/todos/new` 이동
   - 로그아웃 버튼 → useAuth().logout()
   - TodoFilter + TodoList 조합
 
 **완료 조건**:
-- [ ] 로그인 후 `/` 접근 시 todo 목록 표시 (초기 빈 목록 포함)
-- [ ] 카테고리 필터 선택 시 해당 카테고리 todo만 표시
-- [ ] 완료 필터 선택 시 완료/미완료 todo 분리 표시
-- [ ] schedule_status=overdue 선택 시 due_date 지난 미완료 todo만 표시
-- [ ] 완료된 todo에 취소선 스타일 적용 확인
-- [ ] 빈 목록일 때 "할일이 없습니다" 메시지 표시
-- [ ] 20개 초과 시 페이지네이션 동작
+- [x] 로그인 후 `/` 접근 시 todo 목록 표시 (초기 빈 목록 포함)
+- [x] 카테고리 필터 선택 시 해당 카테고리 todo만 표시
+- [x] 완료 필터 선택 시 완료/미완료 todo 분리 표시
+- [x] schedule_status=overdue 선택 시 due_date 지난 미완료 todo만 표시
+- [x] 완료된 todo에 취소선 스타일 적용 확인
+- [x] 빈 목록일 때 "할일이 없습니다" 메시지 표시
+- [x] 20개 초과 시 페이지네이션 동작
 
 **의존성**: TASK-FE-3, TASK-BE-4, TASK-BE-5
 
@@ -569,21 +589,21 @@ Version 1.0 | 2026-05-13
 **목표**: PATCH /todos/:id/toggle 연동 (UC-07, SCN-05)
 
 **작업 항목**:
-- [ ] `src/hooks/useTodoMutations.ts`에 `toggleTodo` mutation 구현
+- [x] `src/hooks/useTodoMutations.ts`에 `toggleTodo` mutation 구현
   - `useMutation({ mutationFn: (id) => api.todos.toggleTodo(id) })`
   - 성공 시: `['todos']` 쿼리 무효화 (목록 자동 갱신)
   - 성공 시: 토스트 메시지 ("할일이 완료되었습니다" / "할일이 미완료 상태로 복원되었습니다")
   - 실패 시: 토스트 에러 메시지
-- [ ] `TodoCard.tsx`에 완료 체크박스 토글 연결
+- [x] `TodoCard.tsx`에 완료 체크박스 토글 연결
   - 클릭 → `toggleTodo(todo.id)` 호출
   - `isPending` 중 체크박스 비활성화
   - 완료 상태에 따라 체크박스 체크/해제
 
 **완료 조건**:
-- [ ] 미완료 todo 체크박스 클릭 → 완료 처리 후 취소선 표시
-- [ ] 완료된 todo 체크박스 클릭 → 미완료 복원 후 취소선 제거
-- [ ] 토글 중 체크박스 비활성화 (중복 클릭 방지)
-- [ ] 성공 토스트 메시지 표시
+- [x] 미완료 todo 체크박스 클릭 → 완료 처리 후 취소선 표시
+- [x] 완료된 todo 체크박스 클릭 → 미완료 복원 후 취소선 제거
+- [x] 토글 중 체크박스 비활성화 (중복 클릭 방지)
+- [x] 성공 토스트 메시지 표시
 
 **의존성**: TASK-FE-4, TASK-BE-6
 
@@ -594,7 +614,7 @@ Version 1.0 | 2026-05-13
 **목표**: TodoCreatePage, TodoEditPage 구현 (UC-04, UC-05, SCN-01, SCN-06)
 
 **작업 항목**:
-- [ ] `src/components/todo/TodoForm.tsx` 구현 (생성/수정 공용)
+- [x] `src/components/todo/TodoForm.tsx` 구현 (생성/수정 공용)
   - 필드: title (max 200), description (max 1000), start_date, due_date, category_id 드롭다운
   - 실시간 클라이언트 검증:
     - title: 필수, 200자 카운터 표시
@@ -603,61 +623,130 @@ Version 1.0 | 2026-05-13
     - category_id: 필수 (드롭다운 선택 필요)
   - 제출 중 버튼 비활성화
   - 서버 에러 인라인 표시
-- [ ] `src/hooks/useTodoMutations.ts`에 나머지 mutation 추가
+- [x] `src/hooks/useTodoMutations.ts`에 나머지 mutation 추가
   - `createTodo(payload)`: POST /todos → 성공 시 `/` 리다이렉트 + `['todos']` 무효화
   - `updateTodo(id, payload)`: PUT /todos/:id → 성공 시 `/` 리다이렉트 + `['todos']` 무효화
   - `deleteTodo(id)`: DELETE /todos/:id → 성공 시 목록 무효화 + 토스트
-- [ ] `src/pages/TodoCreatePage.tsx` 구현
+- [x] `src/pages/TodoCreatePage.tsx` 구현
   - TodoForm (빈 초기값)
   - 제출 → `createTodo()` 호출
-- [ ] `src/pages/TodoEditPage.tsx` 구현
+- [x] `src/pages/TodoEditPage.tsx` 구현
   - `GET /todos/:id`로 기존 데이터 로드 후 TodoForm 초기값 설정
   - 제출 → `updateTodo()` 호출
-- [ ] `src/components/todo/DeleteConfirmModal.tsx` 구현
+- [x] `src/components/todo/DeleteConfirmModal.tsx` 구현
   - "정말로 삭제하시겠습니까? 삭제된 데이터는 복구할 수 없습니다." 메시지
   - 확인/취소 버튼
   - 확인 → `deleteTodo()` 호출
-- [ ] `App.tsx` 라우트 추가
+- [x] `App.tsx` 라우트 추가
   - `/todos/new` → ProtectedRoute → TodoCreatePage
   - `/todos/:id/edit` → ProtectedRoute → TodoEditPage
 
 **완료 조건**:
-- [ ] 필드 누락 시 제출 버튼 비활성화 및 인라인 에러 표시
-- [ ] due_date < start_date 입력 시 즉시 경고 표시 + 제출 불가
-- [ ] todo 생성 성공 → `/` 리다이렉트 후 새 todo 목록에 표시
-- [ ] todo 수정 폼에 기존 값이 사전 입력됨
-- [ ] todo 수정 성공 → `/` 리다이렉트 후 변경 내용 반영
-- [ ] 삭제 확인 모달 표시 → 확인 클릭 → todo 목록에서 제거
-- [ ] 삭제 성공 토스트 메시지 표시
+- [x] 필드 누락 시 제출 버튼 비활성화 및 인라인 에러 표시
+- [x] due_date < start_date 입력 시 즉시 경고 표시 + 제출 불가
+- [x] todo 생성 성공 → `/` 리다이렉트 후 새 todo 목록에 표시
+- [x] todo 수정 폼에 기존 값이 사전 입력됨
+- [x] todo 수정 성공 → `/` 리다이렉트 후 변경 내용 반영
+- [x] 삭제 확인 모달 표시 → 확인 클릭 → todo 목록에서 제거
+- [x] 삭제 성공 토스트 메시지 표시
 
 **의존성**: TASK-FE-4, TASK-BE-5
 
 ---
 
-### TASK-FE-7: 프론트엔드 통합 및 반응형 검증
+### TASK-FE-8: 카테고리 관리 페이지 구현
 
-**목표**: 전체 사용자 시나리오(SCN-01~10) 브라우저 동작 검증 및 반응형 확인
+**목표**: CategoryPage 구현 (UC-09, UC-10, UC-11)
 
 **작업 항목**:
-- [ ] SCN-01: 회원가입 → 자동로그인 → todo 생성 전체 흐름 확인
-- [ ] SCN-02: 잘못된 비밀번호 → 단일 오류 메시지 표시 → 재입력 성공
-- [ ] SCN-03: due_date < start_date 입력 → 실시간 경고 → 수정 후 제출 성공
-- [ ] SCN-04: 카테고리 + 기간초과 필터 복합 적용 확인
-- [ ] SCN-05: todo 완료 토글 → 취소선 표시 → 재토글 복원
-- [ ] SCN-06: todo 수정 → 카테고리 변경 → 저장 확인
-- [ ] SCN-07: 삭제 확인 모달 → 삭제 실행 → 목록에서 제거
-- [ ] SCN-09: (AT 만료 시뮬레이션) 자동 갱신 후 원본 요청 재시도 확인
-- [ ] SCN-10: 로그아웃 → `/login` 리다이렉트 → `/` 직접 접근 차단
-- [ ] 반응형 검증: 브라우저 너비 1024px 이상/미만에서 레이아웃 확인
-- [ ] 콘솔 에러 없음 확인
+- [x] `src/api/categories.ts` CRUD 확장
+  - `createCategory(payload)` → POST /categories
+  - `updateCategory(id, payload)` → PUT /categories/:id
+  - `deleteCategory(id)` → DELETE /categories/:id
+- [x] `src/hooks/useCategoryMutations.ts` 구현
+  - `useCreateCategory()`: mutate 후 `['categories']` 쿼리 무효화, 성공/실패 토스트
+  - `useUpdateCategory()`: mutate 후 `['categories']` 쿼리 무효화, 성공/실패 토스트
+  - `useDeleteCategory()`: mutate 후 `['categories']` 쿼리 무효화, 성공/실패 토스트
+- [x] `src/pages/CategoryPage.tsx` 구현
+  - 기본 카테고리 4종: 읽기 전용 칩 표시
+  - 사용자 카테고리 목록: 인라인 추가/수정/삭제 UI
+  - 삭제 시 DeleteConfirmModal 재사용
+  - 각 뮤테이션 중 로딩 상태 표시
+- [x] `src/pages/TodoListPage.tsx` 헤더에 "카테고리 관리" 버튼 추가
+  - navigate('/categories')로 이동
+- [x] `src/App.tsx`에 `/categories` 라우트 추가
+  - `ProtectedRoute` 하에 `CategoryPage` 마운트
 
 **완료 조건**:
-- [ ] SCN-01~10 모든 시나리오 브라우저에서 정상 동작
-- [ ] 로그인된 사용자 A가 사용자 B의 todo에 접근 시 서버 403 응답 처리 확인
-- [ ] 반응형: 1024px 이상 정상 레이아웃, 768px에서 세로 스택 레이아웃
-- [ ] TypeScript 컴파일 오류, ESLint 오류, 콘솔 에러 없음
+- [x] `/categories` 접근 시 기본 카테고리 4종 읽기 전용 표시
+- [x] 새 카테고리 추가 → 목록에 즉시 반영
+- [x] 카테고리 이름 수정 → 수정된 이름으로 즉시 반영
+- [x] 카테고리 삭제 시 확인 모달 표시 → 삭제 후 목록에서 제거
+- [x] 할일이 있는 카테고리 삭제 시도 → `CATEGORY_IN_USE` 에러 토스트 표시
+- [x] 기본 카테고리는 수정/삭제 버튼 미표시
+- [x] TodoListPage 헤더에 "카테고리 관리" 버튼 표시
 
-**의존성**: TASK-FE-3 ~ TASK-FE-6 모두, TASK-BE-7
+**의존성**: TASK-FE-4, TASK-BE-4
+
+---
+
+### TASK-FE-10: UI 모드 전환 구현 (라이트/다크)
+
+**목표**: 사용자가 UI 모드를 전환하고 설정이 유지되는 기능 구현
+
+**작업 항목**:
+- [x] `src/store/themeStore.ts` 구현
+  - 상태: `theme: 'light' | 'dark'`
+  - 액션: `setTheme(theme)`, `toggleTheme()`
+  - 초기화: `localStorage.getItem('todolist-theme')` 읽어 기본값 결정 (없으면 `'light'`)
+  - 부수효과: `document.documentElement.classList.toggle('dark', ...)` + `localStorage.setItem(...)` 동시 처리
+- [x] `src/components/common/ThemeToggle.tsx` 구현
+  - 라이트 모드: 달 아이콘 버튼 (클릭 시 다크 전환)
+  - 다크 모드: 태양 아이콘 버튼 (클릭 시 라이트 전환)
+  - `aria-label`, `title` 접근성 속성 포함
+- [x] `src/index.css` 다크 모드 CSS 변수 오버라이드 추가
+  - `html.dark { ... }` 블록: surface, background, text, border, skeleton, shadow 등 전체 토큰 오버라이드
+  - 기존 컴포넌트는 CSS 변수 기반이므로 별도 수정 없이 자동 적용
+- [x] 모든 인증 필요 페이지 헤더에 `<ThemeToggle />` 추가
+  - `TodoListPage`, `CategoryPage`, `TodoCreatePage`, `TodoEditPage`
+
+**완료 조건**:
+- [x] 헤더에 테마 전환 버튼 표시 (모든 인증 페이지 공통)
+- [x] 라이트 → 다크 전환 시 전체 UI 색상 즉시 변경 확인
+- [x] 다크 → 라이트 전환 시 원복 확인
+- [x] 브라우저 새로고침 후에도 마지막 설정 유지 (`localStorage` 복원)
+- [x] 로그아웃 후 재로그인 시에도 설정 유지
+- [x] TypeScript 컴파일 오류 없음
+
+**의존성**: TASK-FE-1
+
+---
+
+### TASK-FE-9: 프론트엔드 통합 및 반응형 검증
+
+**목표**: 전체 사용자 시나리오(SCN-01~11) 브라우저 동작 검증 및 반응형 확인
+
+**작업 항목**:
+- [x] SCN-01: 회원가입 → 자동로그인 → todo 생성 전체 흐름 확인
+- [x] SCN-02: 잘못된 비밀번호 → 단일 오류 메시지 표시 → 재입력 성공
+- [x] SCN-03: due_date < start_date 입력 → 실시간 경고 → 수정 후 제출 성공
+- [x] SCN-04: 카테고리 + 기간초과 필터 복합 적용 확인
+- [x] SCN-05: todo 완료 토글 → 취소선 표시 → 재토글 복원
+- [x] SCN-06: todo 수정 → 카테고리 변경 → 저장 확인
+- [x] SCN-07: 삭제 확인 모달 → 삭제 실행 → 목록에서 제거
+- [x] SCN-09: (AT 만료 시뮬레이션) 자동 갱신 후 원본 요청 재시도 확인 — api/client.ts 인터셉터 단위 테스트로 커버
+- [x] SCN-10: 로그아웃 → `/login` 리다이렉트 → `/` 직접 접근 차단
+- [x] SCN-11: 카테고리 추가·수정·삭제 전체 흐름 확인
+- [x] 반응형 검증: 브라우저 너비 1024px 이상/미만에서 레이아웃 확인
+- [x] 콘솔 에러 없음 확인
+
+**완료 조건**:
+- [x] SCN-01~11 모든 시나리오 브라우저에서 정상 동작
+- [x] 로그인된 사용자 A가 사용자 B의 todo에 접근 시 서버 403 응답 처리 확인
+- [x] 반응형: 1024px 이상 정상 레이아웃, 768px에서 세로 스택 레이아웃
+- [x] TypeScript 컴파일 오류, ESLint 오류, 콘솔 에러 없음
+
+**의존성**: TASK-FE-3 ~ TASK-FE-8, TASK-FE-10, TASK-BE-7
 
 ---
 
@@ -685,16 +774,20 @@ TASK-0-1 (초기 세팅)
             │                                                      │
             └── TASK-FE-1 (FE 구조)                               │
                     │                                              │
-                    └── TASK-FE-2 (스토어 + API 클라이언트)        │
-                            │                                      │
-                            └── TASK-FE-3 (인증 페이지) ──────────┘
-                                    │
-                                    └── TASK-FE-4 (목록 + 필터)
-                                            │
-                                            ├── TASK-FE-5 (완료 토글)
-                                            └── TASK-FE-6 (생성/수정/삭제)
-                                                    │
-                                                    └── TASK-FE-7 (통합 검증)
+                    ├── TASK-FE-2 (스토어 + API 클라이언트)        │
+                    │       │                                      │
+                    │       └── TASK-FE-3 (인증 페이지) ──────────┘
+                    │               │
+                    │               └── TASK-FE-4 (목록 + 필터)
+                    │                       │
+                    │                       ├── TASK-FE-5 (완료 토글)
+                    │                       └── TASK-FE-6 (생성/수정/삭제)
+                    │                               │
+                    │                               └── TASK-FE-8 (카테고리 관리 페이지)
+                    │                                       │
+                    │                                       └── TASK-FE-9 (통합 검증)
+                    │
+                    └── TASK-FE-10 (UI 모드 전환) ─────────────────┘
 ```
 
 ---
@@ -729,4 +822,4 @@ TASK-0-1 (초기 세팅)
 - [x] Set-Cookie 응답 헤더 미사용 (토큰은 JSON body)
 - [ ] `any` 타입 미사용 (TypeScript strict) — 프론트엔드 미구현
 - [ ] ESLint 오류 없음 — 프론트엔드 미구현
-- [ ] localStorage 토큰 저장 미사용 (Zustand 메모리 저장) — 프론트엔드 미구현
+- [x] localStorage 토큰 저장 미사용 (Zustand 메모리 저장)

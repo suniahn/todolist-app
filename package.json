@@ -1,8 +1,20 @@
 {
   "dependencies": {
+    "@tanstack/react-query": "^5.100.10",
+    "axios": "^1.16.1",
     "express": "^5.2.1",
     "nodemon": "^3.1.14",
     "openapi-mock-express-middleware": "^4.4.0",
-    "swagger-ui-express": "^5.0.1"
+    "react-router-dom": "^7.15.0",
+    "swagger-ui-express": "^5.0.1",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitest/coverage-v8": "^4.1.6",
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.6"
   }
 }

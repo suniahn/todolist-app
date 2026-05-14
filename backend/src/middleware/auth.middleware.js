@@ -11,7 +11,7 @@ function authMiddleware(req, res, next) {
   const token = authHeader.slice(7);
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
     req.userId = payload.sub;
     console.log(`[AUTH] token verified: userId=${payload.sub}`);
     next();

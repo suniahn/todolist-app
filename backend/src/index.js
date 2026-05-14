@@ -1,5 +1,12 @@
 require('dotenv').config();
 
+const REQUIRED_ENV = ['JWT_SECRET', 'JWT_REFRESH_SECRET', 'DATABASE_URL'];
+for (const key of REQUIRED_ENV) {
+  if (!process.env[key] || process.env[key].length < 32) {
+    throw new Error(`Environment variable ${key} is missing or too short (minimum 32 characters)`);
+  }
+}
+
 const app = require('./app');
 const pool = require('./db/pool');
 
