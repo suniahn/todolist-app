@@ -8,7 +8,7 @@ export function LoginPage() {
           로그인
         </h1>
         <p style={{ margin: '0 0 32px', color: 'var(--color-text-secondary)', fontSize: 14 }}>
-          TodoListApp에 오신 것을 환영합니다
+          할일목록앱에 오신 것을 환영합니다
         </p>
         <LoginForm />
       </div>
