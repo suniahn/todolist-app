@@ -1,0 +1,63 @@
+- generic [ref=e2]:
+  - banner [ref=e92]:
+    - heading "TodoListApp" [level=1] [ref=e93]
+    - generic [ref=e94]:
+      - generic [ref=e95]: 김지수님
+      - button "라이트 모드로 전환" [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+      - button "카테고리 관리" [ref=e103] [cursor=pointer]
+      - button "로그아웃" [ref=e104] [cursor=pointer]
+  - main [ref=e105]:
+    - generic [ref=e107]:
+      - generic [ref=e108]:
+        - generic [ref=e109]: 카테고리
+        - combobox [ref=e110]:
+          - option "전체" [selected]
+          - option "개인"
+          - option "건강"
+          - option "쇼핑"
+          - option "업무"
+      - generic [ref=e111]:
+        - generic [ref=e112]: 완료 여부
+        - combobox [ref=e113]:
+          - option "전체" [selected]
+          - option "미완료만"
+          - option "완료만"
+      - generic [ref=e114]:
+        - generic [ref=e115]: 일정 상태
+        - generic [ref=e116]:
+          - generic [ref=e117] [cursor=pointer]:
+            - radio "전체" [checked] [ref=e118]
+            - text: 전체
+          - generic [ref=e119] [cursor=pointer]:
+            - radio "진행 중" [ref=e120]
+            - text: 진행 중
+          - generic [ref=e121] [cursor=pointer]:
+            - radio "기간초과" [ref=e122]
+            - text: 기간초과
+    - generic [ref=e123]:
+      - generic [ref=e124]:
+        - button "+ 새로운 할일 추가" [ref=e125] [cursor=pointer]
+        - generic [ref=e126]: 총 1개
+      - table [ref=e128]:
+        - rowgroup [ref=e129]:
+          - row "완료 제목 카테고리 시작일 종료예정일" [ref=e130]:
+            - columnheader "완료" [ref=e131]
+            - columnheader "제목" [ref=e132]
+            - columnheader "카테고리" [ref=e133]
+            - columnheader "시작일" [ref=e134]
+            - columnheader "종료예정일" [ref=e135]
+            - columnheader [ref=e136]
+        - rowgroup [ref=e137]:
+          - row "[마케팅] 상반기 전략 보고서 작성 업무 2026-05-15 2026-05-22 수정 삭제" [ref=e138]:
+            - cell [ref=e139]:
+              - checkbox [ref=e140] [cursor=pointer]
+            - cell "[마케팅] 상반기 전략 보고서 작성" [ref=e141]
+            - cell "업무" [ref=e142]:
+              - generic [ref=e143]: 업무
+            - cell "2026-05-15" [ref=e144]
+            - cell "2026-05-22" [ref=e145]
+            - cell "수정 삭제" [ref=e146]:
+              - generic [ref=e147]:
+                - button "수정" [ref=e148] [cursor=pointer]
+                - button "삭제" [ref=e149] [cursor=pointer]

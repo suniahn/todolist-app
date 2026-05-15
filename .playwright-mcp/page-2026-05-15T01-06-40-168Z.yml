@@ -1,0 +1,34 @@
+- generic [ref=e2]:
+  - banner [ref=e87]:
+    - heading "TodoListApp" [level=1] [ref=e88]
+    - generic [ref=e89]:
+      - generic [ref=e90]: 김지수님
+      - button "라이트 모드로 전환" [ref=e91] [cursor=pointer]:
+        - img [ref=e92]
+      - button "로그아웃" [ref=e98] [cursor=pointer]
+  - main [ref=e99]:
+    - generic [ref=e100]:
+      - button "← 할일 목록으로" [ref=e101] [cursor=pointer]
+      - heading "카테고리 관리" [level=2] [ref=e102]
+    - generic [ref=e103]:
+      - generic [ref=e104]:
+        - heading "기본 카테고리" [level=3] [ref=e105]
+        - paragraph [ref=e106]: 시스템에서 제공하는 기본 카테고리입니다.
+      - generic [ref=e107]:
+        - generic [ref=e108]: 개인
+        - generic [ref=e109]: 건강
+        - generic [ref=e110]: 쇼핑
+        - generic [ref=e111]: 업무
+    - generic [ref=e112]:
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - heading "나의 카테고리" [level=3] [ref=e115]
+          - paragraph [ref=e116]: 직접 만든 카테고리입니다.
+        - button "+ 카테고리 추가" [ref=e117] [cursor=pointer]
+      - generic [ref=e123]:
+        - textbox "카테고리 이름" [active] [ref=e124]
+        - button "추가" [ref=e125] [cursor=pointer]
+        - button "취소" [ref=e126] [cursor=pointer]
+      - generic [ref=e118]:
+        - paragraph [ref=e119]: 아직 나만의 카테고리가 없습니다
+        - paragraph [ref=e120]: 카테고리를 추가하여 할일을 더 세분화하세요!

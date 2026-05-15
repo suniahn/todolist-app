@@ -1,0 +1,17 @@
+- generic [ref=e432]:
+  - heading "로그인" [level=1] [ref=e433]
+  - paragraph [ref=e434]: TodoListApp에 오신 것을 환영합니다
+  - generic [ref=e435]:
+    - generic [ref=e436]:
+      - generic [ref=e437]: 이메일
+      - textbox "이메일" [ref=e438]:
+        - /placeholder: example@email.com
+    - generic [ref=e439]:
+      - generic [ref=e440]: 비밀번호
+      - textbox "비밀번호" [ref=e441]:
+        - /placeholder: 비밀번호 입력
+    - button "로그인" [ref=e442] [cursor=pointer]
+    - paragraph [ref=e443]:
+      - text: 계정이 없으신가요?
+      - link "회원가입" [ref=e444] [cursor=pointer]:
+        - /url: /register

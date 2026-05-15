@@ -1,0 +1,38 @@
+- generic [ref=e2]:
+  - banner [ref=e121]:
+    - heading "TodoListApp" [level=1] [ref=e122]
+    - generic [ref=e123]:
+      - generic [ref=e124]: 김지수님
+      - button "라이트 모드로 전환" [ref=e125] [cursor=pointer]:
+        - img [ref=e126]
+      - button "카테고리 관리" [ref=e132] [cursor=pointer]
+      - button "로그아웃" [ref=e133] [cursor=pointer]
+  - main [ref=e134]:
+    - generic [ref=e136]:
+      - generic [ref=e137]:
+        - generic [ref=e138]: 카테고리
+        - combobox [ref=e139]:
+          - option "전체"
+          - option "개인"
+          - option "건강"
+          - option "쇼핑"
+          - option "업무" [selected]
+      - generic [ref=e140]:
+        - generic [ref=e141]: 완료 여부
+        - combobox [ref=e142]:
+          - option "전체" [selected]
+          - option "미완료만"
+          - option "완료만"
+      - generic [ref=e143]:
+        - generic [ref=e144]: 일정 상태
+        - generic [ref=e145]:
+          - generic [ref=e146] [cursor=pointer]:
+            - radio "전체" [checked] [ref=e147]
+            - text: 전체
+          - generic [ref=e148] [cursor=pointer]:
+            - radio "진행 중" [ref=e149]
+            - text: 진행 중
+          - generic [ref=e150] [cursor=pointer]:
+            - radio "기간초과" [ref=e151]
+            - text: 기간초과
+    - button "+ 새로운 할일 추가" [ref=e154] [cursor=pointer]

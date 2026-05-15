@@ -1,0 +1,39 @@
+- generic [ref=e2]:
+  - banner [ref=e58]:
+    - heading "TodoListApp" [level=1] [ref=e59]
+    - button "라이트 모드로 전환" [ref=e60] [cursor=pointer]:
+      - img [ref=e61]
+  - main [ref=e67]:
+    - generic [ref=e68]:
+      - heading "새로운 할일 추가" [level=2] [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: 제목 *
+          - textbox "제목 *" [ref=e73]:
+            - /placeholder: 할일 제목을 입력하세요
+            - text: "[마케팅] 상반기 전략 보고서 작성"
+          - generic [ref=e74]: 19 / 200
+        - generic [ref=e75]:
+          - generic [ref=e76]: 설명
+          - textbox "설명" [ref=e77]:
+            - /placeholder: 설명을 입력하세요 (선택)
+            - text: Q1 마케팅 성과 분석 및 개선안 포함
+          - generic [ref=e78]: 21 / 1000
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: 시작일 *
+            - textbox "시작일 *" [ref=e82]: 2026-05-15
+          - generic [ref=e83]:
+            - generic [ref=e84]: 종료예정일 *
+            - textbox "종료예정일 *" [active] [ref=e85]: 2026-05-22
+        - generic [ref=e86]:
+          - generic [ref=e87]: 카테고리 *
+          - combobox "카테고리 *" [ref=e88]:
+            - option "카테고리를 선택하세요"
+            - option "개인"
+            - option "건강"
+            - option "쇼핑"
+            - option "업무" [selected]
+        - generic [ref=e89]:
+          - button "취소" [ref=e90] [cursor=pointer]
+          - button "등록" [ref=e91] [cursor=pointer]

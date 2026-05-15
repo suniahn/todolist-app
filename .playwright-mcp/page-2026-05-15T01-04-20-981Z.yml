@@ -1,0 +1,37 @@
+- generic [ref=e2]:
+  - banner [ref=e87]:
+    - heading "TodoListApp" [level=1] [ref=e88]
+    - button "라이트 모드로 전환" [ref=e89] [cursor=pointer]:
+      - img [ref=e90]
+  - main [ref=e96]:
+    - generic [ref=e97]:
+      - heading "새로운 할일 추가" [level=2] [ref=e98]
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - generic [ref=e101]: 제목 *
+          - textbox "제목 *" [ref=e102]:
+            - /placeholder: 할일 제목을 입력하세요
+          - generic [ref=e103]: 0 / 200
+        - generic [ref=e104]:
+          - generic [ref=e105]: 설명
+          - textbox "설명" [ref=e106]:
+            - /placeholder: 설명을 입력하세요 (선택)
+          - generic [ref=e107]: 0 / 1000
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: 시작일 *
+            - textbox "시작일 *" [ref=e111]
+          - generic [ref=e112]:
+            - generic [ref=e113]: 종료예정일 *
+            - textbox "종료예정일 *" [ref=e114]
+        - generic [ref=e115]:
+          - generic [ref=e116]: 카테고리 *
+          - combobox "카테고리 *" [ref=e117]:
+            - option "카테고리를 선택하세요" [selected]
+            - option "개인"
+            - option "건강"
+            - option "쇼핑"
+            - option "업무"
+        - generic [ref=e118]:
+          - button "취소" [ref=e119] [cursor=pointer]
+          - button "등록" [disabled] [ref=e120]
